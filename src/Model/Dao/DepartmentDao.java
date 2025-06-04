@@ -4,7 +4,7 @@ import java.util.List;
 
 import Model.Entities.Department;
 
-public interface DepartmentDao {
+public interface DepartmentDao { //Objeto responsavel por fazer o acesso ao banco de dados
 
 	void insert(Department obj);
 	void update(Department obj);

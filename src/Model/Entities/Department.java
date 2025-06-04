@@ -3,27 +3,27 @@ package Model.Entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Deparatment implements Serializable { // Serializable para os objetos serem transformados em sequencias de bytes, objeto ser gravado em arquivo, trafegado em rede
-													
+public class Department implements Serializable { // Serializable para os objetos serem transformados em sequencias de bytes, objeto ser gravado em arquivo, trafegado em rede
+
 	private static final long serialVersionUID = 1L;
 
-	private Integer Id;
+	private Integer id;
 	private String name;
 
-	public Deparatment() {
+	public Department() {
 	}
 
-	public Deparatment(Integer id, String name) {
-		Id = id;
+	public Department(Integer id, String name) {
+		this.id = id;
 		this.name = name;
 	}
 
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getName() {
@@ -36,7 +36,7 @@ public class Deparatment implements Serializable { // Serializable para os objet
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(Id);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -47,13 +47,13 @@ public class Deparatment implements Serializable { // Serializable para os objet
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Deparatment other = (Deparatment) obj;
-		return Objects.equals(Id, other.Id);
+		Department other = (Department) obj;
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
-		return "Deparatment [Id=" + Id + ", name=" + name + "]";
+		return "Department [Id=" + id + ", name=" + name + "]";
 	}
 
 }

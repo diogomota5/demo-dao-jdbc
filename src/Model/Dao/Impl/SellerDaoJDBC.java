@@ -51,16 +51,8 @@ public class SellerDaoJDBC implements SellerDao { // responsável por implementa
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Department dep = new Department();
-				dep.setId(rs.getInt("DepartamentId"));
-				dep.setName(rs.getString("DepName"));
-				Seller obj = new Seller();
-				obj.setId(rs.getInt("Id"));
-				obj.setName(rs.getString("Name"));
-				obj.setEmail(rs.getString("Email"));
-				obj.setBirthDate(rs.getDate("Birthdate"));
-				obj.setBaseSalary(rs.getDouble("BaseSalary"));
-				obj.setDepartment(dep);
+				Department dep = instatiateDeparment(rs);
+				Seller obj = instatiateSeller(rs, dep);
 				return obj;
 			}
 			return null;
@@ -71,6 +63,24 @@ public class SellerDaoJDBC implements SellerDao { // responsável por implementa
 			DB.closeResultSet(rs);
 		}
 
+	}
+
+	private Seller instatiateSeller(ResultSet rs, Department dep) throws SQLException {// propagando a excessão, esse é um método auxiliar
+		Seller obj = new Seller();
+		obj.setId(rs.getInt("Id"));
+		obj.setName(rs.getString("Name"));
+		obj.setEmail(rs.getString("Email"));
+		obj.setBirthDate(rs.getDate("Birthdate"));
+		obj.setBaseSalary(rs.getDouble("BaseSalary"));
+		obj.setDepartment(dep);
+		return obj;
+	}
+
+	private Department instatiateDeparment(ResultSet rs) throws SQLException { // propagando a excessão,  esse é um método auxiliars
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartamentId"));
+		dep.setName(rs.getString("DepName"));
+		return dep;
 	}
 
 	@Override

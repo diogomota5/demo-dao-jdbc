@@ -29,9 +29,9 @@ public class SellerDaoJDBC implements SellerDao { // responsável por implementa
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("insert into seller" 
-		   + "(Name, Email, Birthdate, BaseSalary, DepartamentId) "
-		   + "values " 
-		   + "(?, ?, ?, ?, ?) ", Statement.RETURN_GENERATED_KEYS);
+		    + "(Name, Email, Birthdate, BaseSalary, DepartamentId) "
+			+ "values " 
+		    + "(?, ?, ?, ?, ?) ", Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getEmail());
@@ -89,7 +89,18 @@ public class SellerDaoJDBC implements SellerDao { // responsável por implementa
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("delete from seller where Id = ? ");
+
+			st.setInt(1, id);
+
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
@@ -100,10 +111,11 @@ public class SellerDaoJDBC implements SellerDao { // responsável por implementa
 
 		try {
 			st = conn.prepareStatement(
-			" Select seller.*, department.Name as DepName " 
-			+ " from seller inner join department "
-			+ " on seller.DepartamentId = department.Id " 
-			+ " where seller.Id = ? " + "order by Name");
+					" Select seller.*, department.Name as DepName " 
+					+ " from seller inner join department "
+					+ " on seller.DepartamentId = department.Id " 
+					+ " where seller.Id = ? " 
+					+ "order by Name");
 
 			st.setInt(1, id);
 
@@ -130,10 +142,10 @@ public class SellerDaoJDBC implements SellerDao { // responsável por implementa
 
 		try {
 			st = conn.prepareStatement(
-			"Select seller.*, department.Name as DepName " 
-			+ "from seller inner join department "
-			+ "on seller.DepartamentId = department.Id " 
-			+ "order by Name");
+					"Select seller.*, department.Name as DepName " 
+			        + "from seller inner join department "
+					+ "on seller.DepartamentId = department.Id " 
+					+ "order by Name");
 
 			rs = st.executeQuery();
 

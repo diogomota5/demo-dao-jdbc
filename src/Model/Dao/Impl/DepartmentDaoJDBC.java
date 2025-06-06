@@ -24,10 +24,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	public void insert(Department obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("insert into department " 
-					+ "(Name) " 
-					+ "values " 
-					+ "(?)  ",
+			st = conn.prepareStatement("insert into department " + "(Name) " + "values " + "(?)  ",
 					Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getName());
@@ -57,8 +54,22 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void update(Department obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("update department " 
+			+ "set Name = ?  " 
+			+ "where Id = ? ");
 
+			st.setString(1, obj.getName());
+			st.setInt(2, obj.getId());
+
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override
@@ -69,14 +80,43 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public Department findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement(
+			" Select department.*, department.Name as Name " 
+			+ " from department "
+			+ " where department.Id = ? " 
+			+ "order by Name");
+
+			st.setInt(1, id);
+
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Department dep = instatiateDeparment(rs);
+				return dep;
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	@Override
 	public List<Department> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private Department instatiateDeparment(ResultSet rs) throws SQLException { // propagando a excessão, esse é um método auxiliars
+		Department dep = new Department();
+		dep.setId(rs.getInt("Id"));
+		dep.setName(rs.getString("Name"));
+		return dep;
 	}
 
 }

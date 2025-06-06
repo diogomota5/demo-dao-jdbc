@@ -68,6 +68,19 @@ public class Program {
 		departmentDao.update(department);
 		System.out.println("Update completed");
 		
+		System.out.println("\n=== TEST 10: Department Delete ===");
+		System.out.print("Enter id for delete test: ");
+		id = sc.nextInt();
+		departmentDao.deleteById(id);
+		System.out.println("Delete completed");
+		
+		System.out.println("\n=== TEST 11: Department findAll ===");
+		List <Department> list1 = departmentDao.findAll();
+		for (Department d : list1) {
+			System.out.println(d);
+		}
+		
+		
 		sc.close();
 	}
 }
